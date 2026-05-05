@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: clothing-store-backend
+    runtime: node
+    startCommand: npm start
+    buildCommand: npm install
+    rootDir: backend
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: NODE_ENV
+        value: production
+      - key: APPWRITE_ENDPOINT
+        sync: false
+      - key: APPWRITE_PROJECT_ID
+        sync: false
+      - key: APPWRITE_API_KEY
+        sync: false
+      - key: APPWRITE_DATABASE_ID
+        sync: false
+      - key: APPWRITE_COLLECTION_PRODUCTS
+        value: products
+      - key: APPWRITE_COLLECTION_USERS
+        value: users
+      - key: APPWRITE_COLLECTION_ORDERS
+        value: orders
+      - key: APPWRITE_COLLECTION_PAYMENT
+        value: payment
+      - key: APPWRITE_STORAGE_BUCKET_ID
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: UPLOAD_PATH
+        value: ./uploads
+      - key: MAX_FILE_SIZE
+        value: "31457280"
+      - key: FRONTEND_URL
+        value: https://clothing-store-e3s.pages.dev
+      - key: ML_SERVICE_URL
+        value: http://localhost:8000
