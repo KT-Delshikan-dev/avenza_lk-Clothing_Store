@@ -60,25 +60,17 @@ const Products = () => {
     return () => controller.abort();
   }, [filters]);
 
-  const fetchProducts = async (signal) => {
+    const fetchProducts = async (signal) => {
     setLoading(true);
     try {
-      let response;
-      if (filters.search) {
-        // AI-powered search (Still using axios directly for this custom endpoint)
-        response = await axios.post(`${process.env.REACT_APP_API_URL}/ai-search`, { query: filters.search }, { signal });
-        setProducts(response.data.data);
-        setPagination(response.data.pagination);
-      } else {
-        // Standard category/filter fetch using productService
-        const result = await productService.getProducts(filters);
-        setProducts(result.data);
-        setPagination({
-            page: result.page,
-            total: result.total,
-            pages: result.totalPages
-        });
-      }
+      // Standard category/filter fetch using productService (handles search internally)
+      const result = await productService.getProducts(filters);
+      setProducts(result.data);
+      setPagination(result.pagination || {
+          page: result.page || 1,
+          total: result.total || result.data.length,
+          pages: result.totalPages || 1
+      });
     } catch (error) {
       if (error.name !== 'CanceledError') {
         console.error('Error fetching products:', error);
