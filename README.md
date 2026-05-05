@@ -122,4 +122,4 @@ The application uses a premium design system:
 
 ---
 
-Built with ❤️ by AVENZA Team
+Built by AVENZA Team
