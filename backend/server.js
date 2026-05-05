@@ -23,7 +23,7 @@ const allowedOrigins = [
   .filter(Boolean);
 
 if (process.env.NODE_ENV !== 'production') {
-  allowedOrigins.push('http://localhost:3000');
+  allowedOrigins.push('https://clothing-store-e3s.pages.dev');
 }
 
 // Middleware
