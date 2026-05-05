@@ -179,21 +179,47 @@ const productController = {
             if (productData.excludeFromNewArrivals === 'false') productData.excludeFromNewArrivals = false;
 
             // Handle numbers
-            if (productData.price) productData.price = parseFloat(productData.price);
-            if (productData.originalPrice) productData.originalPrice = parseFloat(productData.originalPrice);
-            if (productData.stock) productData.stock = parseInt(productData.stock);
+            if (productData.price !== undefined) {
+                if (productData.price !== '' && productData.price !== null) {
+                    productData.price = parseFloat(productData.price);
+                } else {
+                    productData.price = undefined; // Don't update if empty
+                }
+            }
+            if (productData.originalPrice !== undefined) {
+                if (productData.originalPrice !== '' && productData.originalPrice !== null) {
+                    productData.originalPrice = parseFloat(productData.originalPrice);
+                } else {
+                    productData.originalPrice = undefined; // Don't update if empty
+                }
+            }
+            if (productData.stock !== undefined) {
+                if (productData.stock !== '' && productData.stock !== null) {
+                    productData.stock = parseInt(productData.stock) || 0;
+                } else {
+                    productData.stock = undefined; // Don't update if empty
+                }
+            }
 
-            // Whitelist allowed fields for Appwrite
             const allowedFields = [
                 'name', 'description', 'price', 'originalPrice', 'category', 
                 'subCategory', 'images', 'sizes', 'colors', 'stock', 
                 'sku', 'tags', 'featured', 'isActive', 'excludeFromNewArrivals'
             ];
-            
-            const filteredData = {};
+
+            // Merge with existing product data for partial updates
+            const updateData = { ...existingProduct };
             allowedFields.forEach(field => {
                 if (productData[field] !== undefined) {
-                    filteredData[field] = productData[field];
+                    updateData[field] = productData[field];
+                }
+            });
+
+            // Whitelist allowed fields for Appwrite
+            const filteredData = {};
+            allowedFields.forEach(field => {
+                if (updateData[field] !== undefined) {
+                    filteredData[field] = updateData[field];
                 }
             });
 

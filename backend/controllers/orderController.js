@@ -28,7 +28,8 @@ const orderController = {
     async getOrder(req, res) {
         try {
             const order = await orderService.getOrderById(req.params.id);
-            if (order.user !== req.user.id && req.user.role !== 'admin') {
+            const orderUserId = order.user?.id || order.user;
+            if (orderUserId !== req.user.id && req.user.role !== 'admin') {
                 return res.status(403).json({ success: false, message: 'Unauthorized' });
             }
             res.json({ success: true, data: order });
@@ -105,9 +106,10 @@ const orderController = {
     async cancelOrder(req, res) {
         try {
             const order = await orderService.getOrderById(req.params.id);
+            const orderUserId = order.user?.id || order.user;
             
             // Check ownership
-            if (order.user !== req.user.id) {
+            if (orderUserId !== req.user.id) {
                 return res.status(403).json({ success: false, message: 'Unauthorized' });
             }
 
